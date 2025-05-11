@@ -6,7 +6,7 @@ docker stop portainer
 echo "Eliminando contenedor Portainer..."
 docker rm portainer
 
-echo "⬇Descargando última imagen de Portainer..."
+echo "Descargando última imagen de Portainer..."
 docker pull portainer/portainer-ce:latest
 
 echo "Iniciando nuevo contenedor Portainer..."
