@@ -7,14 +7,13 @@ function error {
 
 function check_internet() {
   printf "Checking if you are online..."
-  curl -s --head https://github.com > /dev/null
+  wget -q --spider http://github.com
   if [ $? -eq 0 ]; then
     echo "Online. Continuing."
   else
     error "Offline. Go connect to the internet then run the script again."
   fi
 }
-
 # Verifica que se ejecute como root
 if [ "$EUID" -ne 0 ]; then
   error "Please run this script as root (e.g., with sudo)."
