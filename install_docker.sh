@@ -7,7 +7,7 @@ function error {
 
 function check_internet() {
   printf "Checking if you are online..."
-  wget -q --spider http://github.com
+  curl -s --head https://github.com > /dev/null
   if [ $? -eq 0 ]; then
     echo "Online. Continuing."
   else
@@ -15,8 +15,16 @@ function check_internet() {
   fi
 }
 
+# Verifica que se ejecute como root
+if [ "$EUID" -ne 0 ]; then
+  error "Please run this script as root (e.g., with sudo)."
+fi
+
 check_internet
 
 curl -sSL https://get.docker.com | sh || error "Failed to install Docker."
-sudo usermod -aG docker toshiba || error "Failed to add user to the Docker usergroup."
-echo "Remember to logoff/reboot for the changes to take effect."
+
+# Agrega al usuario actual al grupo docker
+usermod -aG docker $(logname) || error "Failed to add user to the Docker usergroup."
+
+echo "Remember to log off or reboot for the changes to take effect."
