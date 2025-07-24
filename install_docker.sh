@@ -23,6 +23,11 @@ check_internet
 
 curl -sSL https://get.docker.com | sh || error "Failed to install Docker."
 
+# Crea el grupo docker si no existe
+if ! getent group docker > /dev/null 2>&1; then
+  groupadd docker || error "Failed to create 'docker' group."
+fi
+
 # Agrega al usuario actual al grupo docker
 usermod -aG docker $(logname) || error "Failed to add user to the Docker usergroup."
 
